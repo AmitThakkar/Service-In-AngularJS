@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Service-in-angularjs by AmitThakkar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Service-in-angularjs</h1>
+      <h2 class="project-tagline">This repository is for exploring Service Providers in AngularJS.</h2>
+      <a href="https://github.com/AmitThakkar/Service-In-AngularJS" class="btn">View on GitHub</a>
+      <a href="https://github.com/AmitThakkar/Service-In-AngularJS/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/AmitThakkar/Service-In-AngularJS/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="service-in-angularjs" class="anchor" href="#service-in-angularjs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Service-In-AngularJS</h1>
+
+<p>This repository is for exploring Service Providers in AngularJS.</p>
+
+<p>When we are working on <strong>MVC</strong> (or <strong>MVVM</strong> for <strong>AngularJS</strong>) <strong>Design-Patterns</strong>, our application is loosely coupled because of  different independent components defined for e.g. <strong>Controller</strong>, <strong>View</strong>, <strong>Services</strong>, <strong>Modal/Data</strong> etc. All the components have their own work/role but today we will discuss only <strong>Services</strong>.</p>
+
+<p><strong>Services</strong> are that part of application where we write our business logic and load data (if it is frond-end framework Service e.g. <strong>AngularJS</strong> <strong>Service</strong> then it loads data from Web Server and if it is back-end framework Service e.g. <strong>NodeJS</strong> <strong>Service</strong> then it loads data from Database Server or other Web Server). <strong>AngularJS</strong> also provides many built-in <strong>services</strong> e.g. <strong>$http</strong>, <strong>$q</strong> etc. <strong>$http</strong> is very commonly used <strong>service</strong> which helps us to load data from Web Server, we can hit Ajax request with the help of <strong>$http</strong> <strong>service</strong>, which internally hits <strong>XMLHTTPRequest</strong>.</p>
+
+<p>Generally, instead of writing <strong>Services</strong>  we do data loading from Web-Server in <strong>Controllers</strong>, which is obviously a bad practice. So lets try a basic program, where we will load data from Web-Server with the help of <strong>Service</strong> instead of writing the code into <strong>Controller</strong>.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> serviceTestApp <span class="pl-k">=</span> <span class="pl-smi">angular</span>.<span class="pl-en">module</span>(<span class="pl-s"><span class="pl-pds">'</span>serviceTest<span class="pl-pds">'</span></span>, []);
+
+<span class="pl-c">/*</span>
+<span class="pl-c"> * Defining TestService, Which will load User list Asynchronously(From Web-Server).</span>
+<span class="pl-c"> * for demo purpose we are using setTimeout().</span>
+<span class="pl-c"> *</span>
+<span class="pl-c"> * $q is built-in Angular Service which helps us to implement Promise-Defer Design Pattern and</span>
+<span class="pl-c"> * will be injected to TestService by AngularJS via DI(Dependency Injection) Design Pattern.</span>
+<span class="pl-c"> * */</span>
+<span class="pl-smi">serviceTestApp</span>.<span class="pl-en">service</span>(<span class="pl-s"><span class="pl-pds">'</span>TestService<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$q</span>) {
+    <span class="pl-c">// Defining Service function: getUsers which will load user list</span>
+    <span class="pl-v">this</span>.<span class="pl-en">getUsers</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+        <span class="pl-k">var</span> deferred <span class="pl-k">=</span> <span class="pl-smi">$q</span>.<span class="pl-c1">defer</span>();
+        <span class="pl-c1">setTimeout</span>(<span class="pl-k">function</span> () {
+            <span class="pl-k">var</span> users <span class="pl-k">=</span> [
+                {name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Amit Thakkar<span class="pl-pds">"</span></span>, age<span class="pl-k">:</span> <span class="pl-c1">25</span>},
+                {name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Namita<span class="pl-pds">"</span></span>, age<span class="pl-k">:</span> <span class="pl-c1">36</span>},
+                {name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Kanika<span class="pl-pds">"</span></span>, age<span class="pl-k">:</span> <span class="pl-c1">43</span>}
+            ];
+            <span class="pl-smi">deferred</span>.<span class="pl-en">resolve</span>(users);
+        }, <span class="pl-c1">2000</span>);
+        <span class="pl-k">return</span> <span class="pl-smi">deferred</span>.<span class="pl-smi">promise</span>;
+    };
+});</pre></div>
+
+<p>Also, <strong>Services</strong> must be registered with <strong>module</strong>(Same as <strong><a href="http://codechutney.in/blog/angularjs/component-in-angularjs/">directives</a></strong>) via <strong>module.service</strong> API, in which first argument is the name of the <strong>Service</strong> and second argument is the function. Second argument function is just a constructor function that will be called with <strong>'new'</strong> keyword by <strong>AngularJS</strong> itself. And this <strong>Service</strong> will be injected to <strong>Controllers</strong> or other <strong>Services</strong> (<strong>AngularJS</strong> also implement <strong>Dependency Injection</strong> Design Pattern to inject <strong>services</strong> to <strong>Controllers</strong> and <strong>Services</strong>).</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">/*</span>
+<span class="pl-c"> * Defining TestController, who will use TestService to get User List.</span>
+<span class="pl-c"> * */</span>
+<span class="pl-k">function</span> <span class="pl-en">TestController</span>(<span class="pl-smi">$scope</span>, <span class="pl-smi">TestService</span>) {
+    <span class="pl-c">// Calling getUsers function on TestService.</span>
+    <span class="pl-smi">TestService</span>.<span class="pl-en">getUsers</span>().
+        <span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">users</span>) {
+            <span class="pl-smi">$scope</span>.<span class="pl-smi">users</span> <span class="pl-k">=</span> users;
+        });
+}</pre></div>
+
+<p><strong>AngularJS</strong> <strong>Services</strong> implement <strong><a href="http://codechutney.in/blog/nodejs/singleton-pattern-with-javascript/">Singleton Design Pattern</a></strong> so only one object is created for an application.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/AmitThakkar/Service-In-AngularJS">Service-in-angularjs</a> is maintained by <a href="https://github.com/AmitThakkar">AmitThakkar</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
