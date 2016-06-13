@@ -1,4 +1,4 @@
-Service-In-AngularJS
+Service In AngularJS
 ====================
 
 This repository is for exploring Service Providers in AngularJS.
@@ -52,3 +52,13 @@ function TestController($scope, TestService) {
 ```
 
 **AngularJS** **Services** implement **[Singleton Design Pattern](http://codechutney.in/blog/nodejs/singleton-pattern-with-javascript/)** so only one object is created for an application.
+
+Follow Me
+---
+[Github](https://github.com/AmitThakkar)
+
+[Twitter](https://twitter.com/amit_thakkar01)
+
+[LinkedIn](https://in.linkedin.com/in/amitthakkar01)
+
+[More Blogs By Me](http://amitthakkar.github.io/)
