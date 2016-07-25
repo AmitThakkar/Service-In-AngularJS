@@ -51,7 +51,7 @@ function TestController($scope, TestService) {
 }
 ```
 
-**AngularJS** **Services** implement **[Singleton Design Pattern](http://codechutney.in/blog/nodejs/singleton-pattern-with-javascript/)** so only one object is created for an application.
+**AngularJS** **Services** implement **Singleton Design Pattern** so only one object is created for an application.
 
 Follow Me
 ---
